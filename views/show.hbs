@@ -41,5 +41,13 @@
            src="{{ restaurant.image }}" alt="{{ restaurant.name }}"
            style="max-width: 600px;">
     </div>
+
+    <div>
+      <a class="btn btn-primary" href="/">Back</a>
+      <a class="btn btn-info" href="/restaurants/{{ restaurant._id }}/edit">Edit</a>
+      <form action="/restaurants/{{ restaurant._id }}/delete" method="POST" style="display: inline;">
+        <button class="btn-danger" type="submit">Delete</button>
+      </form>
+    </div>
   </div>
 </div>
