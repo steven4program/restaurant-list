@@ -109,6 +109,32 @@ app.post('/restaurants/:id/delete', (req, res) => {
     .catch((error) => console.log(error));
 });
 
+app.get('/search', (req, res) => {
+  const keyword = req.query.keyword.trim().toLowerCase();
+
+  if (keyword === '') {
+    return res.redirect('/');
+  }
+
+  Restaurant.find()
+    .lean()
+    .then((restaurants) => {
+      const results = restaurants.filter(
+        (restaurant) =>
+          restaurant.name.toLowerCase().includes(keyword) ||
+          restaurant.category.toLowerCase().includes(keyword)
+      );
+      if (results.length) {
+        res.render('index', { restaurant: results, keyword });
+      } else {
+        res.render('index', {
+          noSearchResult: '<h3>沒有符合的搜尋結果</h3>',
+          keyword,
+        });
+      }
+    });
+});
+
 app.get('/restaurants/:id', (req, res) => {
   const id = req.params.id;
   Restaurant.findById(id)
