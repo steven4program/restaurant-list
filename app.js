@@ -1,5 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const exphbs = require('express-handlebars');
+const Restaurant = require('./models/restaurant');
+const bodyParser = require('body-parser');
 
 const app = express();
 
@@ -18,8 +21,18 @@ db.once('open', () => {
   console.log('mongodb connected!');
 });
 
+app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }));
+app.set('view engine', 'hbs');
+
+app.use(express.static('public'));
+
+app.use(bodyParser.urlencoded({ extended: true }));
+
 app.get('/', (req, res) => {
-  res.send('hello world');
+  Restaurant.find()
+    .lean()
+    .then((restaurant) => res.render('index', { restaurant }))
+    .catch((error) => console.log(error));
 });
 
 app.listen(3000, () => {
