@@ -6,10 +6,12 @@ const Restaurant = require('../../models/restaurant')
 const rawInfo = require('../../models/seeds/restaurant')
 // 定義 Home route
 router.get('/', (req, res) => {
-  Restaurant.find()
+  const userId = req.user._id
+  Restaurant.find({ userId })
     .lean()
+    .sort({ name: 'asc' })
     .then((restaurant) => res.render('index', { restaurant }))
-    .catch((error) => console.log(error))
+    .catch((error) => console.error(error))
 })
 // 定義 Search route
 router.get('/search', (req, res) => {
