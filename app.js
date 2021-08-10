@@ -6,6 +6,8 @@ const methodOverride = require('method-override')
 
 // 引用 router
 const routes = require('./routes')
+
+const usePassport = require('./config/passport')
 require('./config/mongoose')
 
 const app = express()
@@ -26,6 +28,8 @@ app.use(express.static('public'))
 app.use(bodyParser.urlencoded({ extended: true }))
 
 app.use(methodOverride('_method'))
+
+usePassport(app)
 
 // 將 request 導入 router
 app.use(routes)
