@@ -27,11 +27,11 @@ router.post('/register', (req, res) => {
   const { name, email, password, confirmPassword } = req.body
   // set error message
   const errors = []
-  if (!name || !email || !password || !confirmPassword) {
-    errors.push({ message: '所有欄位都是必填。' })
+  if (!email || !password || !confirmPassword) {
+    errors.push({ message: 'All fields are required.' })
   }
   if (password !== confirmPassword) {
-    errors.push({ message: '密碼與確認密碼不相符！' })
+    errors.push({ message: 'Passwords do not match.' })
   }
   if (errors.length) {
     return res.render('register', {
@@ -47,27 +47,26 @@ router.post('/register', (req, res) => {
     // if registered, return to register page
     if (user) {
       console.log('User already exists.')
-      res.render('register', {
+      return res.render('register', {
         name,
         email,
         password,
         confirmPassword
       })
-    } else {
-      // if not registered, create data
-      return bcrypt
-        .genSalt(10)
-        .then((salt) => bcrypt.hash(password, salt))
-        .then((hash) =>
-          User.create({
-            name,
-            email,
-            password: hash
-          })
-        )
-        .then(() => res.redirect('/'))
-        .catch((err) => console.log(err))
     }
+    // if not registered, create data
+    return bcrypt
+      .genSalt(10)
+      .then((salt) => bcrypt.hash(password, salt))
+      .then((hash) =>
+        User.create({
+          name,
+          email,
+          password: hash
+        })
+      )
+      .then(() => res.redirect('/'))
+      .catch((err) => console.log(err))
   })
 })
 
