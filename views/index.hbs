@@ -10,10 +10,18 @@
             <button class="btn btn-major" type="submit" id="search-button"><i class="fas fa-search"></i></button>
           </div>
         </div>
+        {{#if message}}
+        <div class="mt-2">
+          <p>{{message}}</p>
+        </div>
+        {{/if}}
       </form>
     </div>
 
-    <a href="/restaurants/new" class="btn btn-primary btn-lg active">加入新餐廳</a>
+    <div class="mt-2">
+      <a href="/restaurants/new" class="btn btn-primary btn-lg active">加入新餐廳</a>
+    </div>
+
 
     {{!-- <div class="sort mt-3 col-sm-2 col-12">
       <form action="/restaurants/sort">

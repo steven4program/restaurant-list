@@ -14,7 +14,7 @@
 
 ## Screenshot 畫面瀏覽
 
-![image](https://github.com/steven4program/restaurant-list/blob/master/restaurant-list-RESTful.png)
+![image](https://github.com/steven4program/restaurant-list/blob/master/login.png)
 
 ## Prerequisites - 環境建置與需求
 
