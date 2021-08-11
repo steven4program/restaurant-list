@@ -23,10 +23,10 @@
 - express-handlebars v5.3.2
 - mongoose v5.13.2
 - mongodb v4.2.14
-- method-override: v3.0.0
-- bcryptjs: v2.4.3
-- body-parser: v1.19.0
-- connect-flash: v0.1.1
+- method-override v3.0.0
+- bcryptjs
+- body-parser v1.19.0
+- connect-flash v0.1.1
 - dotenv v10.0.0
 - passport v0.4.1
 - passport-facebook v3.0.0
@@ -77,6 +77,24 @@ App is running on http://localhost:3000
 ```
 
 7. 在任一瀏覽器中輸入 http://localhost:3000 開始使用本專案
+
+## Testing - 測試帳號
+
+- User1
+
+```
+name: Benjamin
+email: user1@example.com
+password: 12345678
+```
+
+- User2
+
+```
+name: Trevor
+email: user2@example.com
+password: 12345678
+```
 
 ## Developer - 開發者
 
