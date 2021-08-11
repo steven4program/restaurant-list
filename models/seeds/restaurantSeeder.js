@@ -1,23 +1,43 @@
+const bcrypt = require('bcryptjs')
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
+
 const Restaurant = require('../restaurant')
-const rawInfo = require('./restaurant.json')
+const User = require('../user')
+
+const SEED_RESTAURANT = require('./restaurant.json')
+const SEED_USER = require('./user.json')
 
 const db = require('../../config/mongoose')
 
 db.once('open', () => {
-  console.log('mongodb connected!')
-  rawInfo.results.forEach((restaurant) => {
-    Restaurant.create({
-      id: restaurant.id,
-      name: restaurant.name,
-      name_en: restaurant.name_en,
-      category: restaurant.category,
-      image: restaurant.image,
-      location: restaurant.location,
-      phone: restaurant.phone,
-      google_map: restaurant.google_map,
-      rating: restaurant.rating,
-      description: restaurant.description
+  Promise.all(
+    SEED_USER.map((user) =>
+      bcrypt
+        .genSalt(10)
+        .then((salt) => bcrypt.hash(user.password, salt))
+        .then((hash) =>
+          User.create({
+            name: user.name,
+            email: user.email,
+            password: hash
+          })
+        )
+        .then((userInfo) => {
+          const restaurants = SEED_RESTAURANT.filter((restaurant) =>
+            user.ownRestaurantId.includes(restaurant.id)
+          )
+          restaurants.forEach((restaurant) => {
+            restaurant.userId = userInfo._id
+          })
+          return Restaurant.create(restaurants)
+        })
+    )
+  )
+    .then(() => {
+      console.log('done!')
+      process.exit()
     })
-  })
-  console.log('done!')
+    .catch((error) => console.log(error))
 })
